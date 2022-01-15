@@ -20,4 +20,4 @@ def set():
     )
     db.commit()
 
-    return 'hey', 200
+    return 'SUCCESS', 200

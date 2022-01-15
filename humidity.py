@@ -1,13 +1,23 @@
 from math import degrees
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
+    Blueprint, request
 )
 
 from db import get_db
+import time
 
 bp = Blueprint('humidity', __name__, url_prefix='/humidity')
 
 @bp.route('/set', methods=["POST"])
 def set():
     value = request.form['value']
-    # Mergem in baza de date si salvam timestamp-ul curent si value
+
+    db = get_db()
+    db.execute(
+        'INSERT INTO humidity (timestamp, value)'
+        ' VALUES (?, ?) ',
+        (time.time(), value)
+    )
+    db.commit()
+
+    return 'SUCCESS', 200
