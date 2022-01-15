@@ -4,10 +4,20 @@ from flask import (
 )
 
 from db import get_db
+import time
 
 bp = Blueprint('temperature', __name__, url_prefix='/temperature')
 
 @bp.route('/set', methods=["POST"])
 def set():
     degrees = request.form['degrees']
-    # Mergem in baza de date si salvam timestamp-ul curent si degrees
+
+    db = get_db()
+    db.execute(
+        'INSERT INTO temperature (timestamp, value)'
+        ' VALUES (?, ?) ',
+        (time.time(), degrees)
+    )
+    db.commit()
+
+    return 'hey', 200
