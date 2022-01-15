@@ -19,6 +19,7 @@ More information can be found in the [Customer Requirements Analysis Document](h
 ### Built With
 
 * [Flask](https://flask.palletsprojects.com/en/2.0.x/)
+* [SQLite](https://www.sqlite.org/index.html)
 * [Eclipse Mosquitto](https://mosquitto.org/)
 
 
@@ -60,16 +61,24 @@ and you see your `.venv` activated
 ```
 
 4. Install libraries
-`pip3 install -r requirements.txt`
+```sh
+pip3 install -r requirements.txt
+```
 
-5. Set environment value for development:
-`export FLASK_ENV=development`
+5. To switch Flask to the development environment and enable debug mode, set `FLASK_ENV`:
+```sh
+export FLASK_ENV=development
+```
 
-6. Initialize (or reinitialize) database:  
-`flask init-db`
+6. Initialize (or reinitialize) database:
+```sh
+flask init-db
+```
 
-7. Run:
-`flask run`
+7. Run the application:
+```sh
+flask run
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
