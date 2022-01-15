@@ -46,7 +46,7 @@ def create_app():
     app.register_blueprint(auth.bp)
     app.register_blueprint(temperature.bp)
     # app.register_blueprint(water.bp)
-    # app.register_blueprint(humidty.bp)
+    app.register_blueprint(humidity.bp)
 
     return app
 
