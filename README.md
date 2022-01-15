@@ -1,3 +1,5 @@
+<!-- README template used: https://github.com/othneildrew/Best-README-Template -->
+
 # Smart Pots
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
@@ -24,10 +26,50 @@ More information can be found in the [Customer Requirements Analysis Document](h
 ## Getting Started
 
 ### Prerequisites
-You should have python3 installed and pip3.
+You should have [python3](https://www.python.org/downloads/) and [pip3](https://pypi.org/project/pip/) installed.
+
+#### Linux
+```sh
+sudo apt-get install python3-pip
+```
 
 ### Installation
 
+#### Linux
+<!-- https://tech.serhatteker.com/post/2018-12/virtualenv/ -->
+1. Install virtualenv if not already installed:
+```sh
+sudo pip3 install virtualenv
+```
+
+2. Create a new virtual environment:
+```sh
+cd Smart-Pots/
+virtualenv .venv
+```
+
+Note: Use `.venv` or any `$NAME` for your virtualenv.
+
+3. Activate environment:
+```sh
+source .venv/bin/activate
+```
+and you see your `.venv` activated
+```sh
+(.venv) ~/Smart-Pots$
+```
+
+4. Install libraries
+`pip3 install -r requirements.txt`
+
+5. Set environment value for development:
+`export FLASK_ENV=development`
+
+6. Initialize (or reinitialize) database:  
+`flask init-db`
+
+7. Run:
+`flask run`
 
 <!-- USAGE EXAMPLES -->
 ## Usage
