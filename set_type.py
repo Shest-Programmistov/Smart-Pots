@@ -1,1 +1,2 @@
-# Setam tipul plantei (adica o valoare care inseamna cat de multa apa are nevoie)
+"""Manages setting the plant species, as the needed amount
+of water differs based on the plant."""
