@@ -1,0 +1,5 @@
+- !fix timestamp problem (when calling db.execute - select .. timestamp... orderby timestamp...)
+- update issues
+- add `login required` to functionalities?
+- water.py! & other needed files 
+- integration & unit tests
