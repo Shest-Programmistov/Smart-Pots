@@ -11,6 +11,7 @@ import auth
 import temperature
 import water
 import humidity
+import force_water
 
 # Necessary monkey-patch
 eventlet.monkey_patch()
@@ -30,8 +31,8 @@ def create_app():
     @app.route('/')
     def hello_world():
         # Here I chose to start the periodic publishing after the root endpoint is called.
-        # It's not the best nor cleaneste approach, but will have to refactor it. 
-        # What is important is that the background_thread function is called on 
+        # It's not the best nor cleaneste approach, but will have to refactor it.
+        # What is important is that the background_thread function is called on
         # a separate thread, so that publishing can happen while simultaneously
         # HTTP endpoints are also functional.
 
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(temperature.bp)
     # app.register_blueprint(water.bp)
     app.register_blueprint(humidity.bp)
+    app.register_blueprint(force_water.bp)
 
     return app
 
@@ -62,7 +64,7 @@ def create_mqtt_app():
 
     global mqtt
     mqtt = Mqtt(app)
-    global socketio 
+    global socketio
     socketio = SocketIO(app, async_mode="eventlet")
 
     return mqtt
@@ -91,4 +93,3 @@ def run_socketio_app():
 
 if __name__ == '__main__':
     run_socketio_app()
-    
