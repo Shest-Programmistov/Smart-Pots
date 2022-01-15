@@ -1,0 +1,1 @@
+# Un endpoint care returneaza un grafic cu udarile din trecut

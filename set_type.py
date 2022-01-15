@@ -1,0 +1,1 @@
+# Setam tipul plantei (adica o valoare care inseamna cat de multa apa are nevoie)

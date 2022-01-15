@@ -1,0 +1,1 @@
+# Aici o sa facem un endpoint care, atunci cand e apelat, uda planta cu ceva parametru.
