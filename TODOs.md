@@ -3,3 +3,4 @@
 - add `login required` to functionalities?
 - water.py! & other needed files 
 - integration & unit tests
+- rename mqtt topic/ create more topics?
