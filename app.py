@@ -16,6 +16,7 @@ import force_water
 import water
 import water_api
 import characteristics
+import plot
 
 # Necessary monkey-patch so that SocketIO successfully works.
 eventlet.monkey_patch()
@@ -56,6 +57,7 @@ def create_app():
     app.register_blueprint(humidity.bp)
     app.register_blueprint(force_water.bp)
     app.register_blueprint(characteristics.bp)
+    app.register_blueprint(plot.bp)
 
     return app
 
