@@ -1,5 +1,5 @@
-"""Publish MQTT - sends how much water to send 
-through the water pump at a specific time interval."""
+"""sends how much water to send through the water 
+pump at a specific time interval."""
 from flask import (
     Blueprint
 )
