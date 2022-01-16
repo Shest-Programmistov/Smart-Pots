@@ -1,1 +1,1 @@
-# Un endpoint care returneaza un grafic cu udarile din trecut
+"""Endpoint returning plot showing the watering history."""

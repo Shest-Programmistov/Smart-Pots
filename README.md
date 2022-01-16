@@ -29,9 +29,17 @@ More information can be found in the [Customer Requirements Analysis Document](h
 ### Prerequisites
 You should have [python3](https://www.python.org/downloads/) and [pip3](https://pypi.org/project/pip/) installed.
 
+Also, you should have an MQTT Broker installed.
+
 #### Linux
 ```sh
 sudo apt-get install python3-pip
+```
+
+For installing Mosquitto MQTT Broker on Linux:
+<!-- http://www.steves-internet-guide.com/install-mosquitto-linux/ -->
+```sh
+sudo apt-get install mosquitto
 ```
 
 ### Installation
@@ -60,6 +68,8 @@ and you see your `.venv` activated
 (.venv) ~/Smart-Pots$
 ```
 
+Note: To deactivate the environment, simply use `deactivate`.
+
 4. Install libraries
 ```sh
 pip3 install -r requirements.txt
@@ -75,9 +85,29 @@ export FLASK_ENV=development
 flask init-db
 ```
 
-7. Run the application:
+7. Running the application.
+The proper way to run the application is:
+```sh
+python3 app.py
+```
+This way, we make sure that SocketIO is used, as Flask is wrapped in SocketIO.
+
+Note: To only run the Flask app (no MQTT communication), just use:
 ```sh
 flask run
+```
+
+Also, **start the MQTT Broker service**. If Mosquitto is used, run:
+```sh
+sudo service mosquitto start 
+```
+To test if it is running use the `netstat –at` command. You should see the Mosquitto broker running on port 1883.
+
+To stop the service, use `sudo service mosquitto stop`.
+
+8. Run the MQTT subscriber to check that data is successfully received.
+```sh
+python3 mqtt_comms_sub.py
 ```
 
 <!-- USAGE EXAMPLES -->
