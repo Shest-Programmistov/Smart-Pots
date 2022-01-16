@@ -15,6 +15,7 @@ import humidity
 import force_water
 import water
 import water_api
+import characteristics
 
 # Necessary monkey-patch so that SocketIO successfully works.
 eventlet.monkey_patch()
@@ -54,6 +55,7 @@ def create_app():
     app.register_blueprint(water_api.bp)
     app.register_blueprint(humidity.bp)
     app.register_blueprint(force_water.bp)
+    app.register_blueprint(characteristics.bp)
 
     return app
 
@@ -90,7 +92,7 @@ def background_thread():
     At every second, publish the status (TODO define what to publish) to broker.
     """
     while True:
-        time.sleep(1)
+        time.sleep(5)
         # Using app context is required because the get_status() functions
         # requires access to the db.
         with app.app_context():
