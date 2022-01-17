@@ -4,3 +4,4 @@ flaskr.sqlite
 lib64
 pyvenv.cfg
 __pycache__
+docs/_build
