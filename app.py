@@ -1,9 +1,11 @@
-from flask import Flask
+from flask import Flask, jsonify
 from threading import Thread
 from flask_mqtt import Mqtt
 # Import SockeIO, which allows us to send messages to 
 # an MQTT client using Flask syntax.
 from flask_socketio import SocketIO
+from flask_swagger import swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 import eventlet
 import json
 import time
@@ -50,8 +52,29 @@ def create_app():
             thread.start()
         return 'Hello World!'
 
+    # Swagger route
+    @app.route("/spec")
+    def spec():
+        return jsonify(swagger(app))
+
+    # Swagger
+    # URL for exposing Swagger UI (without trailing '/')
+    SWAGGER_URL = '/api/docs'
+    # Our API url (can of course be a local resource)
+    API_URL = 'http://127.0.0.1:5000/spec'
+
+    # Call factory function to create our blueprint
+    swaggerui_blueprint = get_swaggerui_blueprint(
+        # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+        SWAGGER_URL,
+        API_URL,
+        config={  # Swagger UI config overrides
+            'title': "Smart Pot"
+        }
+    )
+
     db.init_app(app)
-    app.register_blueprint(auth.bp)
+    app.register_blueprint(swaggerui_blueprint)
     app.register_blueprint(temperature.bp)
     app.register_blueprint(water_api.bp)
     app.register_blueprint(humidity.bp)
