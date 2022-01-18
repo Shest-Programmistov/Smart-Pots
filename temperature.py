@@ -12,8 +12,29 @@ bp = Blueprint('temperature', __name__, url_prefix='/temperature')
 
 @bp.route('/set', methods=["POST"])
 def set():
-    """Sets the temperature level."""
+    """
+    Sets the temperature level.
+    ---
+    parameters:
+      - in: body
+        name: body
+        schema:
+          required:
+            - degrees
+          properties:
+            degrees:
+              type: number
+              description: the number of degrees to set to
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: degrees not supplied.
+    """
     degrees = request.form['degrees']
+
+    if not degrees:
+        return jsonify({'status': 'Value is required.'}), 403
 
     db = get_db()
     db.execute(
