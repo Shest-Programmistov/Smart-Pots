@@ -12,7 +12,7 @@ bp = Blueprint('characteristics', __name__, url_prefix='/characteristics')
 @bp.route('/set', methods=["POST"])
 def set():
     """
-    Sets the hcharacteristics of the plant.
+    Sets the characteristics of the plant.
     ---
     parameters:
       - in: body
