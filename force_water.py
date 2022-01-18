@@ -22,7 +22,7 @@ def force_water():
             - value
           properties:
             value:
-              type: float
+              type: number
               description: the quantity of water
     responses:
       200:

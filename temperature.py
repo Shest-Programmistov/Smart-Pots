@@ -23,7 +23,7 @@ def set():
             - degrees
           properties:
             degrees:
-              type: float
+              type: number
               description: the number of degrees to set to
     responses:
       200:

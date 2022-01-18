@@ -22,7 +22,7 @@ def set():
             - value
           properties:
             value:
-              type: float
+              type: number
               description: the humidity level
     responses:
       200:

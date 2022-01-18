@@ -23,10 +23,10 @@ def set():
             - ideal_temperature
           properties:
             ideal_humidity:
-              type: float
+              type: number
               description: the ideal humidity for the plant
             ideal_temperature:
-              type: float
+              type: number
               description: the ideal temperature for the plant
     responses:
       200:
