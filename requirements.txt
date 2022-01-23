@@ -4,9 +4,5 @@ Flask-MQTT==1.1.1
 Flask-SocketIO==5.1.1
 pytest==6.2.5
 Sphinx==4.4.0
-<<<<<<< HEAD
 flask-swagger==0.2.14
 flask-swagger-ui==3.36.0
-
-=======
->>>>>>> 930cb3945f9bb76466b433dbffde6afc8b0c5e9c
