@@ -29,13 +29,16 @@ socketio = None
 thread = None
 
 
-def create_app(testing=False):
+def create_app(testing=False, db_path='flaskr.sqlite'):
     """Creates Flask main application."""
     global app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
+        DB_PATH=db_path
     )
+    if testing:
+        app.config['TESTING'] = True
 
     # Swagger route
     @app.route("/spec")

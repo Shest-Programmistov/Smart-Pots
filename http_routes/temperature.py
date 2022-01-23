@@ -28,7 +28,7 @@ def set():
     responses:
       200:
         description: everything went fine.
-      403:
+      422:
         description: degrees not supplied.
     """
 

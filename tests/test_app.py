@@ -1,3 +1,4 @@
+import sqlite3
 import pytest
 import tempfile
 import os, sys
@@ -9,21 +10,18 @@ sys.path.insert(0, parent_dir_path)
 
 from app import create_app
 import db
+import water
 import water_util
-
-# with app.app_context():
-#     test_db = db.get_db()
-# pass app as param to test func
 
 
 @pytest.fixture
 def app():
     db_fd, db_path = tempfile.mkstemp()
-    app = create_app(testing=True)
+    app = create_app(testing=True, db_path=db_path)
 
     with app.app_context():
-        db.init_db(db_path)
-        db.get_db()
+        db.close_db()
+        db.init_db()
 
     yield app
 
@@ -34,6 +32,77 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+# -------- DATABASE --------
+
+def test_db_connection(app):
+    with app.app_context():
+        err = False
+        try:
+            entry = db.get_db().execute(
+                'SELECT 100'
+            ).fetchone()
+
+            if not entry:
+                err = True
+                
+        except sqlite3.Error:
+            err = True
+
+        assert err == False
+
+# -------- END DATABASE --------
+
+
+
+# -------- FUNCTIONALITIES --------
+
+def test_water_plant(client, app):
+    with app.app_context():
+        water_qty = 100
+        timestamp = time.time()
+        water_util.water_plant(water_qty, timestamp)
+
+        entry = db.get_db().execute(
+            'SELECT value'
+            ' FROM water'
+            f' WHERE timestamp = {str(timestamp)} and value = {str(water_qty)}' 
+        ).fetchone()
+
+        assert(entry is not None)
+
+
+def test_should_water_1(app):
+    with app.app_context():
+        response = water.get_status()
+        assert response['status'] == 'fail'
+
+
+def test_should_water_2(app):
+    with app.app_context():
+        testing_db = db.get_db()
+        testing_db.execute(
+            'INSERT INTO humidity (timestamp, value)'
+            ' VALUES (?, ?) ',
+            (time.time(), 100)
+        )
+        testing_db.execute(
+            'INSERT INTO temperature (timestamp, value)'
+            ' VALUES (?, ?) ',
+            (time.time(), 100)
+        )
+        testing_db.commit()
+        
+        response = water.get_status()
+        assert response['status'] == 'success'
+
+
+def test_get_water_qty():
+    assert isinstance(water.get_water_qty(10, 100), float)
+
+
+# -------- END FUNCTIONALITIES --------
 
 
 # -------- HTTP ROUTES --------
@@ -118,23 +187,4 @@ def test_water_api(client):
 # test_plot ? 
 
 # -------- END HTTP ROUTES --------
-
-
-# -------- OTHER FUNCTIONALITIES --------
-
-def test_water_functionality(client, app):
-    with app.app_context():
-        water_qty = 100
-        timestamp = time.time()
-        water_util.water_plant(water_qty, timestamp)
-
-        entry = db.get_db().execute(
-            'SELECT value'
-            ' FROM water'
-            f' WHERE timestamp = {str(timestamp)} and value = {str(water_qty)}' 
-        ).fetchone()
-
-        assert(entry is not None)
-
-# -------- END OTHER FUNCTIONALITIES --------
 

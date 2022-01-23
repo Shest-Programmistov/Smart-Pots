@@ -3,18 +3,19 @@ import sqlite3
 import click
 from flask import g
 from flask.cli import with_appcontext
+from flask import current_app
 
 import os
 import csv
 import tqdm
 
 
-def get_db(path='flaskr.sqlite'):
+def get_db():
     """Opens a connection to the SQLite database file, if not yet
     opened, and returns the database."""
     if 'db' not in g:
         g.db = sqlite3.connect(
-            path,
+            current_app.config['DB_PATH'],
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
@@ -29,13 +30,13 @@ def close_db(e=None):
         db.close()
 
 
-def init_db(path='flaskr.sqlite'):
-    db = get_db(path)
+def init_db():
+    db = get_db()
 
     with open('schema.sql', encoding='utf8') as f:
         db.executescript(f.read())
     
-    if path == 'flaskr.sqlite':
+    if current_app.config['DB_PATH'] == 'flaskr.sqlite':
         populate_database(db)
 
 

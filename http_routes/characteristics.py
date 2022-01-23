@@ -31,7 +31,7 @@ def set():
     responses:
       200:
         description: everything went fine.
-      403:
+      422:
         description: required parameters not supplied.
     """
     if not 'ideal_humidity' in request.form:

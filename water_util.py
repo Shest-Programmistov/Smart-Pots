@@ -1,6 +1,5 @@
 """Utils for water functionality"""
 from db import get_db
-import time
 
 
 def water_plant(water, timestamp):

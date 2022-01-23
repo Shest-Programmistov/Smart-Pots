@@ -22,10 +22,16 @@ def get_status():
     ).fetchone()
 
     if temperature is None:
-        return {'status': 'Please set a value for temperature'}
+        return {
+            'status': 'fail',
+            'message': 'Please set a value for temperature'
+        }
 
     if humidity is None:
-        return {'status': 'Please set a value for humidity'}
+        return {
+            'status': 'fail',
+            'message': 'Please set a value for humidity'
+        }
 
     temperature, humidity = temperature[0], humidity[0]
     water_qty = get_water_qty(temperature, humidity)
@@ -33,6 +39,7 @@ def get_status():
         water_plant(water_qty, time.time())    
 
     return {
+        'status': 'success',
         'data': {
             'water': water_qty != 0,
             'qty': water_qty    
