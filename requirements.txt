@@ -8,3 +8,4 @@ flask-swagger==0.2.14
 flask-swagger-ui==3.36.0
 matplotlib==3.5.1
 pandas==1.4.0
+sphinx-rtd-theme==1.0.0

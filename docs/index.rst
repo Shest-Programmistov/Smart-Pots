@@ -1,5 +1,5 @@
 .. Smart Pots documentation master file, created by
-   sphinx-quickstart on Mon Jan 17 17:41:00 2022.
+   sphinx-quickstart on Sun Jan 23 13:41:36 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -18,3 +18,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. automodule:: temperature
+   :members:
