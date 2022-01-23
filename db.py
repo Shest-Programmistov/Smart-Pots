@@ -9,12 +9,12 @@ import csv
 import tqdm
 
 
-def get_db():
+def get_db(path='flaskr.sqlite'):
     """Opens a connection to the SQLite database file, if not yet
     opened, and returns the database."""
     if 'db' not in g:
         g.db = sqlite3.connect(
-            'flaskr.sqlite',
+            path,
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
@@ -29,13 +29,14 @@ def close_db(e=None):
         db.close()
 
 
-def init_db():
-    db = get_db()
+def init_db(path='flaskr.sqlite'):
+    db = get_db(path)
 
     with open('schema.sql', encoding='utf8') as f:
         db.executescript(f.read())
     
-    populate_database(db)
+    if path == 'flaskr.sqlite':
+        populate_database(db)
 
 
 @click.command('init-db')
@@ -49,6 +50,7 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
 
 def populate_database(db):
     DATA_PATH = 'data/datasets-location_B'
