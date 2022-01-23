@@ -112,7 +112,10 @@ python3 mqtt_comms_sub.py
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
+The Swagger API can be accessed at
+```
+http://127.0.0.1:5000/api/docs
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing
