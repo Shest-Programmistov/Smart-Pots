@@ -37,21 +37,6 @@ def create_app():
         SECRET_KEY='dev',
     )
 
-    @app.route('/')
-    def hello_world():
-        """Start the periodic publishing after the root endpoint is called."""
-        # It's not the best, nor cleanest approach, but will have to refactor it.
-        # What is important is that the background_thread function is called on
-        # a separate thread, so that publishing can happen while simultaneously
-        # HTTP endpoints are also functional.
-
-        global thread
-        if thread is None:
-            thread = Thread(target=background_thread)
-            thread.daemon = True
-            thread.start()
-        return 'Hello World!'
-
     # Swagger route
     @app.route("/spec")
     def spec():
@@ -107,6 +92,14 @@ def create_mqtt_app():
     mqtt = Mqtt(app)
     global socketio
     socketio = SocketIO(app, async_mode="eventlet")
+
+    """Start the periodic publishing after the root endpoint is called."""
+
+    global thread
+    if thread is None:
+        thread = Thread(target=background_thread)
+        thread.daemon = True
+        thread.start()
 
     return mqtt
 
