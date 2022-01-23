@@ -17,7 +17,7 @@ def generate_plot(timestamps, values):
     N = 7 * 24 # 7 days, 24 hours
     np.random.seed(0)
 
-    day = np.random.randint(0, 7, N*2)
+    day = np.random.randint(0, 7, N)
     hour = np.random.randint(0, 24, N)
     water_qty = np.random.randint(0, 200, N)
 
