@@ -1,4 +1,5 @@
 """Humidity endpoint"""
+import re
 from flask import (
     Blueprint, request, jsonify
 )
@@ -27,13 +28,17 @@ def set():
     responses:
       200:
         description: everything went fine.
-      403:
+      422:
         description: value not supplied.
     """
+
+    if not 'value' in request.form:
+        return jsonify({'message': 'Value is required.'}), 422
+
     value = request.form['value']
 
-    if not value:
-        return jsonify({'status': 'Value is required.'}), 403
+    if not value.isnumeric():
+      return jsonify({'message': 'Value must be numeric.'}), 422
 
     db = get_db()
     db.execute(
@@ -43,18 +48,4 @@ def set():
     )
     db.commit()
 
-
-    return "SUCCESS", 200
-    # check = get_db().execute(
-    #     'SELECT id, timestamp, value'
-    #     ' FROM humidity'
-    #     ' ORDER BY timestamp DESC'
-    # ).fetchone()
-    # return jsonify({
-    #     'status': 'Humidity level succesfully recorded',
-    #     'data': {
-    #         'id': check['id'],
-    #         'timestamp': check['timestamp'],
-    #         'value': check['value']
-    #     }
-    # }), 200
+    return jsonify({'message': 'Successfully recorded humidity value.'}), 200

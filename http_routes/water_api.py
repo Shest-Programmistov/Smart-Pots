@@ -6,9 +6,9 @@ from flask import (
 
 import water as water_status
 
-bp = Blueprint('water_api', __name__, url_prefix='/water')
+bp = Blueprint('water_api', __name__)
 
-@bp.route('/')
+@bp.route('/water')
 def get_status_api():
 
     # TODO Right now default status code is 200, but the correct status code should be received

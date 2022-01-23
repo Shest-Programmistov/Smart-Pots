@@ -5,11 +5,12 @@ from water_util import water_plant
 from flask import (
     Blueprint, request, jsonify
 )
+import time
 
-bp = Blueprint('force_water', __name__, url_prefix='/force_water')
+bp = Blueprint('force_water', __name__)
 
 
-@bp.route('/', methods=["POST"])
+@bp.route('/force_water', methods=["POST"])
 def force_water():
     """
     Waters the plant immediately.
@@ -27,13 +28,18 @@ def force_water():
     responses:
       200:
         description: everything went fine.
-      403:
+      422:
         description: value not supplied.
     """
+
+    if not 'value' in request.form:
+      return jsonify({'message': 'Value is required.'}), 422
+
     value = request.form['value']
-    if not value:
-        return jsonify({'status': 'Value is required.'}), 403
 
-    water_plant(value)
+    if not value.isnumeric():
+      return jsonify({'message': 'Value must be numeric.'}), 422
 
-    return 'SUCCESS', 200
+    water_plant(value, time.time())
+
+    return jsonify({'message': 'Successfully watered plant.'}), 200
