@@ -85,7 +85,7 @@ export FLASK_ENV=development
 flask init-db
 ```
 
-Also, **start the MQTT Broker service**. If Mosquitto is used, run:
+7. **Start the MQTT Broker service**. If Mosquitto is used, run:
 ```sh
 sudo service mosquitto start 
 ```
@@ -93,7 +93,7 @@ To test if it is running use the `netstat –at` command. You should see the Mos
 
 To stop the service, use `sudo service mosquitto stop`.
 
-7. Running the application.
+8. Running the application.
 The proper way to run the application is:
 ```sh
 python3 app.py
@@ -105,7 +105,7 @@ Note: To only run the Flask app (no MQTT communication), just use:
 flask run
 ```
 
-8. Run the MQTT subscriber to check that data is successfully received.
+9. Run the MQTT subscriber to check that data is successfully received.
 ```sh
 python3 mqtt_comms_sub.py
 ```
