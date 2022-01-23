@@ -11,7 +11,25 @@ bp = Blueprint('humidity', __name__, url_prefix='/humidity')
 
 @bp.route('/set', methods=["POST"])
 def set():
-    """Sets the humidity level."""
+    """
+    Sets the humidity level.
+    ---
+    parameters:
+      - in: body
+        name: body
+        schema:
+          required:
+            - value
+          properties:
+            value:
+              type: number
+              description: the humidity level
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: value not supplied.
+    """
     value = request.form['value']
 
     if not value:
