@@ -4,6 +4,10 @@ import click
 from flask import g
 from flask.cli import with_appcontext
 
+import os
+import csv
+import tqdm
+
 
 def get_db():
     """Opens a connection to the SQLite database file, if not yet
@@ -30,6 +34,8 @@ def init_db():
 
     with open('schema.sql', encoding='utf8') as f:
         db.executescript(f.read())
+    
+    populate_database(db)
 
 
 @click.command('init-db')
@@ -43,3 +49,24 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+def populate_database(db):
+    DATA_PATH = 'data/datasets-location_B'
+    csv_file_names = os.listdir(DATA_PATH)
+    print("Populating database")
+    for csv_file_name in tqdm.tqdm(csv_file_names):
+        with open(os.path.join(DATA_PATH, csv_file_name), newline='') as csv_file:
+            rows = csv.reader(csv_file, delimiter=' ', quotechar='|')
+            for row in rows:
+                _, timestamp, _, _, temperature, humidity, _, _, _, _, _, _ = row
+                db.execute(
+                    'INSERT INTO temperature (timestamp, value)'
+                    ' VALUES (?, ?) ',
+                    (int(timestamp[:-1]), float(temperature[:-1]))
+                )
+                db.execute(
+                    'INSERT INTO humidity (timestamp, value)'
+                    ' VALUES (?, ?) ',
+                    (int(timestamp[:-1]), float(humidity[:-1]))
+                )
+                db.commit()
