@@ -3,49 +3,73 @@ from datetime import datetime
 from db import get_db
 import time
 from flask import (
-    Blueprint
+    Blueprint,
+    send_file
 )
 import pylab as pl
 import numpy as np
 import pandas as pd
 
+import math
+import time
+from datetime import datetime
 
 bp = Blueprint('plot_api', __name__, url_prefix='/plot')
 
 
-def generate_plot(timestamps, values):
-    N = 7 * 24 # 7 days, 24 hours
-    np.random.seed(0)
+def generate_weekly_plot(timestamps, values, oneWeekAgo):
 
-    day = np.random.randint(0, 7, N*2)
-    hour = np.random.randint(0, 24, N)
-    water_qty = np.random.randint(0, 200, N)
+    day = [datetime.fromtimestamp(x - oneWeekAgo).day - 1 - 1 for x in timestamps]
+    hour = [datetime.fromtimestamp(x).hour for x in timestamps]
 
-    df = pd.DataFrame({"day": day, "hour": hour, "water_qty": water_qty})
-    df.drop_duplicates(subset=["day", "hour"], inplace=True)
+    desiredShape = (7, 24)
 
-    df2 = df.pivot(columns="hour", index="day", values="water_qty")
-    df2.fillna(0, inplace=True)
-
-    day, hour = np.mgrid[:df2.shape[0]+1, :df2.shape[1]+1]
     fig, ax = pl.subplots(figsize=(12, 4))
     ax.set_aspect("equal")
-    pl.pcolormesh(hour, day, df2.values, cmap="Greens", edgecolor="w", vmin=-10, vmax=100)
-    pl.xlim(0, df2.shape[1])
+
+    dataset = [
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+    ]
+
+    datalen = len(values)
+
+    for i in range(0, datalen):
+        #print(day[i])
+        #print(hour[i])
+        #print(values[i])
+        if day[i] >= 0 and day[i] <= 6:
+            dataset[day[i]][hour[i]] += values[i]
+    
+    #print(dataset)
+
+    day, hour = np.mgrid[:desiredShape[0]+1, :desiredShape[1]+1]
+    pl.pcolormesh(hour, day, dataset, cmap="Greens", edgecolor="w", vmin=-10, vmax=100)
+    pl.xlim(0, desiredShape[1])
     fig.savefig('a.jpg')
 
 
 
 @bp.route('/')
 def plot():
+    nowTime = math.floor(time.time())
+    oneWeek = 3600 * 24 * 7 # in seconds
+
     data = get_db().execute(
         'SELECT timestamp, value'
-        ' FROM water'
+        ' FROM water WHERE timestamp >= ' + str(nowTime-oneWeek)
     ).fetchall()
 
     timestamps = [x[0] for x in data]
     values = [x[1] for x in data]
 
-    generate_plot(timestamps, values)
+    generate_weekly_plot(timestamps, values, nowTime-oneWeek)
 
-    return "SUCCESS", 200
+    #return "SUCCESS", 200
+    return send_file("a.jpg", mimetype='image/jpg')
