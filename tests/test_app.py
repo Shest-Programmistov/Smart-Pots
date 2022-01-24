@@ -58,7 +58,7 @@ def test_db_connection(app):
 
 # -------- FUNCTIONALITIES --------
 
-def test_water_plant(client, app):
+def test_water_plant(app):
     with app.app_context():
         water_qty = 100
         timestamp = time.time()
