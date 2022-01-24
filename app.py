@@ -11,14 +11,14 @@ import json
 import time
 
 import db
-import auth
-import temperature
-import humidity
-import force_water
 import water
-import water_api
-import characteristics
-import plot
+import http_routes.auth as auth
+import http_routes.temperature as temperature
+import http_routes.humidity as humidity
+import http_routes.force_water as force_water
+import http_routes.water_api as water_api
+import http_routes.characteristics as characteristics
+import http_routes.plot as plot
 
 # Necessary monkey-patch so that SocketIO successfully works.
 eventlet.monkey_patch()
@@ -29,13 +29,16 @@ socketio = None
 thread = None
 
 
-def create_app():
+def create_app(testing=False, db_path='flaskr.sqlite'):
     """Creates Flask main application."""
     global app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
+        DB_PATH=db_path
     )
+    if testing:
+        app.config['TESTING'] = True
 
     # Swagger route
     @app.route("/spec")
@@ -58,7 +61,9 @@ def create_app():
         }
     )
 
-    db.init_app(app)
+    if not testing:
+        db.init_app(app)
+        
     app.register_blueprint(swaggerui_blueprint)
     app.register_blueprint(temperature.bp)
     app.register_blueprint(water_api.bp)

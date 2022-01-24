@@ -14,7 +14,7 @@ import math
 import time
 from datetime import datetime
 
-bp = Blueprint('plot_api', __name__, url_prefix='/plot')
+bp = Blueprint('plot_api', __name__)
 
 
 def generate_weekly_plot(timestamps, values, oneWeekAgo):
@@ -56,7 +56,7 @@ def generate_weekly_plot(timestamps, values, oneWeekAgo):
 
 
 
-@bp.route('/')
+@bp.route('/plot')
 def plot():
     nowTime = math.floor(time.time())
     oneWeek = 3600 * 24 * 7 # in seconds

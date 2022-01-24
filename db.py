@@ -3,6 +3,7 @@ import sqlite3
 import click
 from flask import g
 from flask.cli import with_appcontext
+from flask import current_app
 
 import os
 import csv
@@ -14,7 +15,7 @@ def get_db():
     opened, and returns the database."""
     if 'db' not in g:
         g.db = sqlite3.connect(
-            'flaskr.sqlite',
+            current_app.config['DB_PATH'],
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
@@ -35,7 +36,8 @@ def init_db():
     with open('schema.sql', encoding='utf8') as f:
         db.executescript(f.read())
     
-    populate_database(db)
+    if current_app.config['DB_PATH'] == 'flaskr.sqlite':
+        populate_database(db)
 
 
 @click.command('init-db')
@@ -49,6 +51,7 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
 
 def populate_database(db):
     DATA_PATH = 'data/datasets-location_B'
