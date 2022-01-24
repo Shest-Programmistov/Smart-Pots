@@ -2,6 +2,17 @@
 Features
 ========
 
+****************
+Overall Workflow
+****************
+The smart pot acts as the "publisher".
+
+Two threads are used - for HTTP and MQTT requests respectively.
+
+In regards to MQTT, the Broker represents an intermediary entity that enables the MQTT clients to communicate.
+
+A subscriber mock script is also provided for testing purposes.
+
 **********************
 Temperature Monitoring
 **********************
