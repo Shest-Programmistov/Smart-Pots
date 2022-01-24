@@ -29,7 +29,8 @@ release = '1.0.0'
 
 # Sphinx extension module names.
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosectionlabel'
 ]
 
 # Paths that contain templates here, relative to this directory.
@@ -52,3 +53,11 @@ html_theme = "sphinx_rtd_theme"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+rst_epilog = """
+
+.. |pot_img| image:: https://hackaday.com/wp-content/uploads/2021/10/IoT-flower-pot-600.jpg?w=600&h=600
+            :width: 200
+            :alt: pot
+
+"""
