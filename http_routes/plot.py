@@ -73,3 +73,28 @@ def plot():
 
     #return "SUCCESS", 200
     return send_file("a.jpg", mimetype='image/jpg')
+
+
+def generate_weekly_temperature(timestamps, values, oneWeekAgo):
+    pl.plot(timestamps - oneWeekAgo, values)
+    pl.savefig('a.jpg')
+
+
+@bp.route('/plot_temperature')
+def plot_temperature():
+    nowTime = math.floor(time.time())
+    oneWeek = 3600 * 24 * 7 # in seconds
+
+    data = get_db().execute(
+        'SELECT timestamp, value'
+        ' FROM temperature WHERE timestamp >= ' + str(nowTime-oneWeek)
+    ).fetchall()
+
+    timestamps = [x[0] for x in data]
+    values = [x[1] for x in data]
+
+    generate_weekly_temperature(timestamps, values, nowTime-oneWeek)
+
+    #return "SUCCESS", 200
+    return send_file("a.jpg", mimetype='image/jpg')
+    
