@@ -37,8 +37,10 @@ def set():
 
     value = request.form['value']
 
-    if not value.isnumeric():
-      return jsonify({'message': 'Value must be numeric.'}), 422
+    try:
+        float(value)
+    except:
+        return jsonify({'message': 'Value must be numeric.'}), 422
 
     db = get_db()
     db.execute(
