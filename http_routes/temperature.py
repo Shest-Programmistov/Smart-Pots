@@ -36,9 +36,11 @@ def set():
         return jsonify({'message': 'Degrees are required.'}), 422
 
     degrees = request.form['degrees']
-    
-    if not degrees.isnumeric():
-      return jsonify({'message': 'Degrees must be numeric.'}), 422
+
+    try:
+        float(degrees)
+    except:
+        return jsonify({'message': 'Degrees must be numeric.'}), 422
 
     db = get_db()
     db.execute(
