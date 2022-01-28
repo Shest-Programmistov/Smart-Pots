@@ -5,12 +5,14 @@ from water_util import water_plant
 from flask import (
     Blueprint, request, jsonify
 )
+from http_routes.auth import login_required
 import time
 
 bp = Blueprint('force_water', __name__)
 
 
 @bp.route('/force_water', methods=["POST"])
+@login_required
 def force_water():
     """
     Waters the plant immediately.
@@ -28,6 +30,8 @@ def force_water():
     responses:
       200:
         description: everything went fine.
+      403:
+        description: user is not authenticated.
       422:
         description: value not supplied.
     """

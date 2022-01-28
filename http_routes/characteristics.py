@@ -3,6 +3,8 @@ of water differs based on the plant."""
 from flask import (
     Blueprint, request, jsonify
 )
+
+from http_routes.auth import login_required
 from db import get_db
 import time
 
@@ -10,6 +12,7 @@ bp = Blueprint('characteristics', __name__, url_prefix='/characteristics')
 
 
 @bp.route('/set', methods=["POST"])
+@login_required
 def set():
     """
     Sets the characteristics of the plant.
@@ -31,6 +34,8 @@ def set():
     responses:
       200:
         description: everything went fine.
+      403:
+        description: user is not authenticated.
       422:
         description: required parameters not supplied.
     """
