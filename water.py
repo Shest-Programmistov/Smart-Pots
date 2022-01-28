@@ -9,6 +9,8 @@ def get_water_qty(temperature, humidity, coef = 0.5, x = 3, y = 5):
 
 
 def get_status():
+    """Returns how much water to send through the water 
+    pump at a specific time interval."""
     temperature = get_db().execute(
         'SELECT value'
         ' FROM temperature'

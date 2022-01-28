@@ -112,7 +112,7 @@ def create_mqtt_app():
 def background_thread():
     """Starts MQTT publishing.
 
-    At every second, publish the status (TODO define what to publish) to broker.
+    At every second, publish the water status to broker.
     """
     while True:
         time.sleep(5)
