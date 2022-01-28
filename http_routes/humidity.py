@@ -4,6 +4,7 @@ from flask import (
     Blueprint, request, jsonify
 )
 
+from http_routes.auth import login_required
 from db import get_db
 import time
 
@@ -11,6 +12,7 @@ bp = Blueprint('humidity', __name__, url_prefix='/humidity')
 
 
 @bp.route('/set', methods=["POST"])
+@login_required
 def set():
     """
     Sets the humidity level.
@@ -28,6 +30,8 @@ def set():
     responses:
       200:
         description: everything went fine.
+      403:
+        description: user is not authenticated.
       422:
         description: value not supplied.
     """
