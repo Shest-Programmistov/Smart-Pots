@@ -12,6 +12,7 @@ import pandas as pd
 
 import math
 import time
+from http_routes.auth import login_required
 from datetime import datetime
 
 bp = Blueprint('plot_api', __name__)
@@ -57,6 +58,7 @@ def generate_weekly_plot(timestamps, values, oneWeekAgo):
 
 
 @bp.route('/plot')
+@login_required
 def plot():
     nowTime = math.floor(time.time())
     oneWeek = 3600 * 24 * 7 # in seconds
@@ -71,5 +73,46 @@ def plot():
 
     generate_weekly_plot(timestamps, values, nowTime-oneWeek)
 
-    #return "SUCCESS", 200
     return send_file("a.jpg", mimetype='image/jpg')
+
+
+def generate_weekly_normal_graph(timestamps, values, oneWeekAgo):
+    pl.plot(timestamps, values)
+    pl.savefig('a.jpg')
+
+@bp.route('/plot_temperature')
+@login_required
+def plot_temperature():
+    nowTime = math.floor(time.time())
+    oneWeek = 3600 * 24 * 7 # in seconds
+
+    data = get_db().execute(
+        'SELECT timestamp, value'
+        ' FROM temperature WHERE timestamp >= ' + str(nowTime-oneWeek)
+    ).fetchall()
+
+    timestamps = [x[0] for x in data]
+    values = [x[1] for x in data]
+
+    generate_weekly_normal_graph(timestamps, values, nowTime - oneWeek)
+
+    return send_file("a.jpg", mimetype='image/jpg')
+
+@bp.route('/plot_humidity')
+@login_required
+def plot_humidity():
+    nowTime = math.floor(time.time())
+    oneWeek = 3600 * 24 * 7 # in seconds
+
+    data = get_db().execute(
+        'SELECT timestamp, value'
+        ' FROM humidity WHERE timestamp >= ' + str(nowTime-oneWeek)
+    ).fetchall()
+
+    timestamps = [x[0] for x in data]
+    values = [x[1] for x in data]
+
+    generate_weekly_normal_graph(timestamps, values, nowTime - oneWeek)
+
+    return send_file("a.jpg", mimetype='image/jpg')
+    
