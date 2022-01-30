@@ -19,7 +19,6 @@ bp = Blueprint('plot_api', __name__)
 
 
 def generate_weekly_plot(timestamps, values, oneWeekAgo):
-
     day = [datetime.fromtimestamp(x - oneWeekAgo).day - 1 - 1 for x in timestamps]
     hour = [datetime.fromtimestamp(x).hour for x in timestamps]
 
@@ -60,6 +59,16 @@ def generate_weekly_plot(timestamps, values, oneWeekAgo):
 @bp.route('/plot')
 @login_required
 def plot():
+    """
+    Plots the water quantities over the last week divided by hours.
+    ---
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: user is not authenticated.
+    """
+
     nowTime = math.floor(time.time())
     oneWeek = 3600 * 24 * 7 # in seconds
 
@@ -83,6 +92,16 @@ def generate_weekly_normal_graph(timestamps, values, oneWeekAgo):
 @bp.route('/plot_temperature')
 @login_required
 def plot_temperature():
+    """
+    Plots the temperature over the last week.
+    ---
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: user is not authenticated.
+    """
+
     nowTime = math.floor(time.time())
     oneWeek = 3600 * 24 * 7 # in seconds
 
@@ -101,6 +120,16 @@ def plot_temperature():
 @bp.route('/plot_humidity')
 @login_required
 def plot_humidity():
+    """
+    Plots the humidity over the last week.
+    ---
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: user is not authenticated.
+    """
+
     nowTime = math.floor(time.time())
     oneWeek = 3600 * 24 * 7 # in seconds
 
