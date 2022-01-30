@@ -93,6 +93,7 @@ def create_mqtt_app():
     app.config['MQTT_TLS_ENABLED'] = False
 
     global mqtt
+    # Connect to MQTT broker.
     mqtt = Mqtt(app)
     global socketio
     socketio = SocketIO(app, async_mode="eventlet")
@@ -119,7 +120,7 @@ def background_thread():
         # requires access to the db.
         with app.app_context():
             message = json.dumps(water.get_status(), default=str)
-        # Publish
+        # Publish on 'python/mqtt' topic.
         mqtt.publish('python/mqtt', message)
 
 
