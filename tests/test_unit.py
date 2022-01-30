@@ -208,5 +208,23 @@ def test_set_temperature_3(client):
     response = client.post('/temperature/set', data=payload, follow_redirects=True)
     assert response.status_code == 200
 
+
+def test_plot(client):
+    authorize(client)
+    response = client.get('/plot')
+    assert response.status_code == 200
+
+
+def test_plot_temperature(client):
+    authorize(client)
+    response = client.get('/plot_temperature')
+    assert response.status_code == 200
+
+
+def test_plot_humidity(client):
+    authorize(client)
+    response = client.get('/plot_humidity')
+    assert response.status_code == 200
+
 # -------- END HTTP ROUTES --------
 
