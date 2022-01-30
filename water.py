@@ -18,7 +18,7 @@ def get_water_qty(temperature, humidity):
     # a normal plant needs around 100 milliliters of water per watering
 
     if humidity >= ideal_humidity: # it works
-        return 0
+        return 0.0
 
     return ideal_temperature / temperature * (ideal_humidity - humidity) + 100
 
