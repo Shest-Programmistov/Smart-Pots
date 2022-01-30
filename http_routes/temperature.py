@@ -6,11 +6,13 @@ from flask import (
 
 from db import get_db
 import time
+from http_routes.auth import login_required
 
 bp = Blueprint('temperature', __name__, url_prefix='/temperature')
 
 
 @bp.route('/set', methods=["POST"])
+@login_required
 def set():
     """
     Sets the temperature level.
@@ -28,6 +30,8 @@ def set():
     responses:
       200:
         description: everything went fine.
+      403:
+        description: user is not authenticated.
       422:
         description: degrees not supplied.
     """
@@ -36,9 +40,11 @@ def set():
         return jsonify({'message': 'Degrees are required.'}), 422
 
     degrees = request.form['degrees']
-    
-    if not degrees.isnumeric():
-      return jsonify({'message': 'Degrees must be numeric.'}), 422
+
+    try:
+        float(degrees)
+    except:
+        return jsonify({'message': 'Degrees must be numeric.'}), 422
 
     db = get_db()
     db.execute(

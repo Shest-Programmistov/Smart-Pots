@@ -16,7 +16,6 @@ import http_routes.auth as auth
 import http_routes.temperature as temperature
 import http_routes.humidity as humidity
 import http_routes.force_water as force_water
-import http_routes.water_api as water_api
 import http_routes.characteristics as characteristics
 import http_routes.plot as plot
 
@@ -65,8 +64,8 @@ def create_app(testing=False, db_path='flaskr.sqlite'):
         db.init_app(app)
         
     app.register_blueprint(swaggerui_blueprint)
+    app.register_blueprint(auth.bp)
     app.register_blueprint(temperature.bp)
-    app.register_blueprint(water_api.bp)
     app.register_blueprint(humidity.bp)
     app.register_blueprint(force_water.bp)
     app.register_blueprint(characteristics.bp)
@@ -112,7 +111,7 @@ def create_mqtt_app():
 def background_thread():
     """Starts MQTT publishing.
 
-    At every second, publish the status (TODO define what to publish) to broker.
+    At every second, publish the water status to broker.
     """
     while True:
         time.sleep(5)

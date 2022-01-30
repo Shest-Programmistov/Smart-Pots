@@ -11,14 +11,39 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=["POST"])
 def register():
+    """
+    Registers a new user.
+    ---
+    parameters:
+      - in: body
+        name: body
+        schema:
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+              description: the login name for the new user
+            password:
+              type: string
+              description: the password for the new user
+    responses:
+      200:
+        description: user registered succesfully.
+      403:
+        description: there is already an user with that username
+      422:
+        description: required parameters not supplied.
+    """
     username = request.form['username']
     password = request.form['password']
     db = get_db()
 
     if not username:
-        return jsonify({'status': 'Username is required.'}), 403
+        return jsonify({'status': 'Username is required.'}), 422
     elif not password:
-        return jsonify({'status': 'Password is required.'}), 403
+        return jsonify({'status': 'Password is required.'}), 422
 
     try:
         db.execute(
@@ -33,10 +58,35 @@ def register():
 
 @bp.route('/login', methods=["POST"])
 def login():
+    """
+    Logs in a user.
+    ---
+    parameters:
+      - in: body
+        name: body
+        schema:
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+              description: the login name for the user
+            password:
+              type: string
+              description: the password for the user
+    responses:
+      200:
+        description: user logged in succesfully.
+      403:
+        description: there is no user with that username and password.
+      422:
+        description: required parameters not supplied.
+    """
     username = request.form['username']
     password = request.form['password']
     db = get_db()
-    error = None
+
     user = db.execute(
         'SELECT * FROM user WHERE username = ?', (username,)
     ).fetchone()
@@ -53,6 +103,15 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    """
+    Logs out the current user.
+    ---
+    responses:
+      200:
+        description: user logged out succesfully.
+      403:
+        description: user is not authenticated.
+    """
     session.clear()
     return jsonify({'status': 'user logged out succesfully'}), 200
 

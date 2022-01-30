@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS temperature;
 DROP TABLE IF EXISTS humidity;
 DROP TABLE IF EXISTS water;
@@ -26,4 +27,10 @@ CREATE TABLE characteristics (
   timestamp INTEGER NOT NULL,
   ideal_humidity NOT NULL DEFAULT 0,
   ideal_temperature NOT NULL DEFAULT 0
+);
+
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL
 );
