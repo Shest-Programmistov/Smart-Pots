@@ -116,10 +116,22 @@ flask run
 ```sh
 python3 mqtt_comms_sub.py
 ```
+
 ## Test
+To run the tests, simply execute:
 ```sh
 pytest
 ```
+
+To measure the code coverage, run:
+```sh
+coverage run -m pytest
+```
+and then use coverage report to report on the results:
+```sh
+coverage report -m
+```
+For a nicer presentation, use `coverage html` to get annotated HTML listings detailing missed lines.
 
 ## Developer Tools
 ### OpenAPI

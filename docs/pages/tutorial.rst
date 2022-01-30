@@ -35,6 +35,25 @@ Note: To only run the Flask app (no MQTT communication), just use:
 ::
     python3 mqtt_comms_sub.py
 
+
+*******
+Testing
+*******
+To run the tests, simply execute:
+::
+    pytest
+
+To measure the code coverage, run:
+::
+    coverage run -m pytest
+
+and then use coverage report to report on the results:
+::
+    coverage report -m
+
+For a nicer presentation, use `coverage html` to get annotated HTML listings detailing missed lines.
+
+
 ***************
 Developer Tools
 ***************
