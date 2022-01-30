@@ -19,7 +19,6 @@ bp = Blueprint('plot_api', __name__)
 
 
 def generate_weekly_plot(timestamps, values, oneWeekAgo):
-
     day = [datetime.fromtimestamp(x - oneWeekAgo).day - 1 - 1 for x in timestamps]
     hour = [datetime.fromtimestamp(x).hour for x in timestamps]
 
@@ -29,49 +28,60 @@ def generate_weekly_plot(timestamps, values, oneWeekAgo):
     ax.set_aspect("equal")
 
     dataset = [
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
-        [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
     ]
 
     datalen = len(values)
 
     for i in range(0, datalen):
-        #print(day[i])
-        #print(hour[i])
-        #print(values[i])
         if day[i] >= 0 and day[i] <= 6:
             dataset[day[i]][hour[i]] += values[i]
-    
-    #print(dataset)
 
-    day, hour = np.mgrid[:desiredShape[0]+1, :desiredShape[1]+1]
-    pl.pcolormesh(hour, day, dataset, cmap="Greens", edgecolor="w", vmin=-10, vmax=100)
+    day, hour = np.mgrid[:desiredShape[0] + 1, :desiredShape[1] + 1]
+    pl.pcolormesh(
+        hour,
+        day,
+        dataset,
+        cmap="Greens",
+        edgecolor="w",
+        vmin=-10,
+        vmax=100)
     pl.xlim(0, desiredShape[1])
     fig.savefig('a.jpg')
-
 
 
 @bp.route('/plot')
 @login_required
 def plot():
+    """
+    Plots the water quantities over the last week divided by hours.
+    ---
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: user is not authenticated.
+    """
+
     nowTime = math.floor(time.time())
-    oneWeek = 3600 * 24 * 7 # in seconds
+    oneWeek = 3600 * 24 * 7  # in seconds
 
     data = get_db().execute(
         'SELECT timestamp, value'
-        ' FROM water WHERE timestamp >= ' + str(nowTime-oneWeek)
+        ' FROM water WHERE timestamp >= ' + str(nowTime - oneWeek)
     ).fetchall()
 
     timestamps = [x[0] for x in data]
     values = [x[1] for x in data]
 
-    generate_weekly_plot(timestamps, values, nowTime-oneWeek)
+    generate_weekly_plot(timestamps, values, nowTime - oneWeek)
 
     return send_file("a.jpg", mimetype='image/jpg')
 
@@ -80,15 +90,26 @@ def generate_weekly_normal_graph(timestamps, values, oneWeekAgo):
     pl.plot(timestamps, values)
     pl.savefig('a.jpg')
 
+
 @bp.route('/plot_temperature')
 @login_required
 def plot_temperature():
+    """
+    Plots the temperature over the last week.
+    ---
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: user is not authenticated.
+    """
+
     nowTime = math.floor(time.time())
-    oneWeek = 3600 * 24 * 7 # in seconds
+    oneWeek = 3600 * 24 * 7  # in seconds
 
     data = get_db().execute(
         'SELECT timestamp, value'
-        ' FROM temperature WHERE timestamp >= ' + str(nowTime-oneWeek)
+        ' FROM temperature WHERE timestamp >= ' + str(nowTime - oneWeek)
     ).fetchall()
 
     timestamps = [x[0] for x in data]
@@ -97,16 +118,27 @@ def plot_temperature():
     generate_weekly_normal_graph(timestamps, values, nowTime - oneWeek)
 
     return send_file("a.jpg", mimetype='image/jpg'), 200
+
 
 @bp.route('/plot_humidity')
 @login_required
 def plot_humidity():
+    """
+    Plots the humidity over the last week.
+    ---
+    responses:
+      200:
+        description: everything went fine.
+      403:
+        description: user is not authenticated.
+    """
+
     nowTime = math.floor(time.time())
-    oneWeek = 3600 * 24 * 7 # in seconds
+    oneWeek = 3600 * 24 * 7  # in seconds
 
     data = get_db().execute(
         'SELECT timestamp, value'
-        ' FROM humidity WHERE timestamp >= ' + str(nowTime-oneWeek)
+        ' FROM humidity WHERE timestamp >= ' + str(nowTime - oneWeek)
     ).fetchall()
 
     timestamps = [x[0] for x in data]
@@ -115,4 +147,3 @@ def plot_humidity():
     generate_weekly_normal_graph(timestamps, values, nowTime - oneWeek)
 
     return send_file("a.jpg", mimetype='image/jpg'), 200
-    
