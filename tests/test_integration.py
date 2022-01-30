@@ -89,5 +89,5 @@ def test_app(app, client):
         assert response['status'] == 'success' and response['data']['water'] == 0
 
         # Logout
-        response = client.get('/auth/logout', data={'username': 'user', 'password': 'password'})
+        response = client.get('/auth/logout')
         assert response.status_code == 200
