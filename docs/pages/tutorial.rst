@@ -33,10 +33,23 @@ Note: To only run the Flask app (no MQTT communication), just use:
 ::
     python3 mqtt_comms_sub.py
 
-****************
-Swagger UI Usage
-****************
+***************
+Developer Tools
+***************
+
+OpenAPI
+=======
 
 The Swagger API can be accessed at:
 ::
     http://127.0.0.1:5000/api/docs
+
+AsyncAPI
+========
+If AsyncAPI Generator is not installed, you can install it by running:
+::
+    npm install -g @asyncapi/generator
+
+Then, run:
+::
+    ag water.yml @asyncapi/html-template -o output
