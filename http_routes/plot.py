@@ -117,7 +117,7 @@ def plot_temperature():
 
     generate_weekly_normal_graph(timestamps, values, nowTime - oneWeek)
 
-    return send_file("a.jpg", mimetype='image/jpg')
+    return send_file("a.jpg", mimetype='image/jpg'), 200
 
 
 @bp.route('/plot_humidity')
@@ -146,4 +146,4 @@ def plot_humidity():
 
     generate_weekly_normal_graph(timestamps, values, nowTime - oneWeek)
 
-    return send_file("a.jpg", mimetype='image/jpg')
+    return send_file("a.jpg", mimetype='image/jpg'), 200
