@@ -14,7 +14,7 @@ This **IoT** project aims at implementing **remote care for a potted plant** thr
 
 This project was developed by Blahovici Andrei, Dumitrescu Delia, Ganea Antonio, Preda Mihai, Tudor Raluca and Ţifui Alexandru, during their third year of CS studies at University of Bucharest.
 
-The complete documentation can be found at [Smart Pots Documentation](https://smart-pots.readthedocs.io/).
+The documentation can also be found at [Smart Pots Documentation](https://smart-pots.readthedocs.io/).
 
 More information can be found in the [Customer Requirements Analysis Document](https://github.com/Shest-Programmistov/Smart-Pots/wiki/Customer-Requirements-Analysis-Document) wiki page.
 
@@ -117,13 +117,19 @@ python3 mqtt_comms_sub.py
 
 ## Developer Tools
 ### OpenAPI
-The Swagger UI can be accessed at
+We used the OpenAPI Initiative (OAI) to specify what our API can do. 
+
+The Swagger UI can be accessed at:
 ```
 http://127.0.0.1:5000/api/docs
 ```
 
 ### AsyncAPI
+<!-- https://nordicapis.com/how-to-write-your-first-asyncapi-specification/ -->
+The [AsyncAPI Specification](https://www.asyncapi.com/docs/specifications/v2.0.0) is a comprehensive specification language for describing asynchronous messaging APIs. 
+
 <!-- https://github.com/asyncapi/html-template -->
+
 If AsyncAPI Generator is not installed, you can install it by running:
 ```sh
 npm install -g @asyncapi/generator
@@ -166,9 +172,13 @@ If you have a suggestion that would make this better, please fork the repo and c
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 The following list includes resources we found helpful and would like to give credit to:
-* [raresito/SmartBed-RESTApi-example](https://github.com/raresito/SmartBed-RESTApi-example)
-* [asyncapi/html-template](https://github.com/asyncapi/html-template)
-
+* The Software Engineering Courses provided by University of Bucharest;
+* [raresito/SmartBed-RESTApi-example](https://github.com/raresito/SmartBed-RESTApi-example);
+* [Flask-MQTT Package Usage](https://flask-mqtt.readthedocs.io/en/latest/usage.html);
+* [Getting Started with OpenAPI Tools](https://swagger.io/tools/open-source/getting-started/)
+* [asyncapi/html-template](https://github.com/asyncapi/html-template).
+* [How to Write Your First AsyncAPI Specification](https://nordicapis.com/how-to-write-your-first-asyncapi-specification/)
+* [How to Set Up Your Python Project Docs for Success🎉](https://towardsdatascience.com/how-to-set-up-your-python-project-docs-for-success-aab613f79626)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/Shest-Programmistov/Smart-Pots.svg?style=for-the-badge
