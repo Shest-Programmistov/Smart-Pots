@@ -22,6 +22,14 @@ For a complete list of features, see :doc:`features <pages/features>`.
 The code can be found on GitHub at `Shest-Programmistov/Smart-Pots <https://github.com/Shest-Programmistov/Smart-Pots>`_.
 Data has been taken from `IoTsec/Room-Climate-Datasets <https://github.com/IoTsec/Room-Climate-Datasets>`_.
 
+**********
+Tools Used
+**********
+* For the HTTP connection, we are using the `Flask <https://flask.palletsprojects.com/en/2.0.x/>`_ library.
+* For the MQTT connection, the `Flask-MQTT extension <https://flask-mqtt.readthedocs.io/en/latest/>`_ is used. Also, for mocking the MQTT subscriber, `paho-mqtt <https://pypi.org/project/paho-mqtt/>`_ is used.
+* The database is built using `SQLite <https://www.sqlite.org/index.html>`_ - a fully open-source RDBMS.
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
