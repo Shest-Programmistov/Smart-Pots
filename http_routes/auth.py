@@ -36,14 +36,18 @@ def register():
       422:
         description: required parameters not supplied.
     """
-    username = request.form['username']
-    password = request.form['password']
-    db = get_db()
 
-    if not username:
+    request_data = request.get_json()
+
+    if request_data is None or not 'username' in request_data:
         return jsonify({'status': 'Username is required.'}), 422
-    elif not password:
+    elif not 'password' in request_data:
         return jsonify({'status': 'Password is required.'}), 422
+
+    username = request_data['username']
+    password = request_data['password']
+    
+    db = get_db()
 
     try:
         db.execute(
@@ -83,8 +87,16 @@ def login():
       422:
         description: required parameters not supplied.
     """
-    username = request.form['username']
-    password = request.form['password']
+
+    request_data = request.get_json()
+
+    if request_data is None or not 'username' in request_data:
+        return jsonify({'status': 'Username is required.'}), 422
+    elif request_data is None or not 'password' in request_data:
+        return jsonify({'status': 'Password is required.'}), 422
+
+    username = request_data['username']
+    password = request_data['password']
     db = get_db()
 
     user = db.execute(

@@ -94,7 +94,7 @@ flask init-db
 
 If Mosquitto is used, run:
 ```sh
-sudo service mosquitto start 
+sudo service mosquitto start
 ```
 To test if it is running use the `netstat –at` command. You should see the Mosquitto broker running on port 1883.
 
@@ -174,6 +174,50 @@ from the command line to manually build the docs - then, in `docs->build_->html`
 
 Note: we followed the [Style guide for Sphinx-based documentations](https://documentation-style-guide-sphinx.readthedocs.io/en/latest/style-guide.html).
 
+<!-- Bug identification -->
+## Bug identification
+
+Bug identification was done by using the [Restler](https://github.com/microsoft/restler-fuzzer) tool. To use this run the following commands (these were tested on Linux, but if you want to test on other platforms check out the official documentation):
+
+1. Download the official repo
+```sh
+git clone https://github.com/microsoft/restler-fuzzer.git && cd restler-fuzzer
+```
+
+2. Create the folder for the Restler binaries
+```sh
+mkdir ../restler_bin
+```
+
+3. Build the Restler project
+```sh
+python ./build-restler.py --dest_dir ../restler_bin
+```
+
+4. Delete the downloaded repo
+```sh
+cd .. && rm restler-fuzzer
+```
+
+5. Go to the folder where the binaries have been built
+```sh
+cd restler_bin
+```
+
+6. Compile the neccessary files for Restler
+```sh
+dotnet ./restler/Restler.dll compile --api_spec ./swagger.json
+```
+
+7. Run it (for other modes check out the official documentation)
+```sh
+dotnet ./restler/Restler.dll test --grammar_file grammar.py --dictionary_file dict.json --settings engine_settings.json --no_ssl
+```
+
+### Identified bugs so far (and fixed):
+
+* Accepted temperature and humidity values are real numbers, but at first they were checked for integers (non-floating numbers)
+* Empty form bodies made all endpoints throw exceptions
 
 <!-- CONTRIBUTING -->
 ## Contributing

@@ -36,10 +36,12 @@ def set():
         description: degrees not supplied.
     """
 
-    if not 'degrees' in request.form:
+    request_data = request.get_json()
+
+    if request_data is None or not 'degrees' in request_data:
         return jsonify({'message': 'Degrees are required.'}), 422
 
-    degrees = request.form['degrees']
+    degrees = request_data['degrees']
 
     try:
         float(degrees)

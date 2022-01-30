@@ -36,10 +36,12 @@ def set():
         description: value not supplied.
     """
 
-    if not 'value' in request.form:
+    request_data = request.get_json()
+
+    if request_data is None or not 'value' in request_data:
         return jsonify({'message': 'Value is required.'}), 422
 
-    value = request.form['value']
+    value = request_data['value']
 
     try:
         float(value)

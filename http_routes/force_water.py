@@ -35,11 +35,12 @@ def force_water():
       422:
         description: value not supplied.
     """
+    request_data = request.get_json()
 
-    if not 'value' in request.form:
+    if request_data is None or not 'value' in request_data:
       return jsonify({'message': 'Value is required.'}), 422
 
-    value = request.form['value']
+    value = request_data['value']
 
     try:
         float(value)
