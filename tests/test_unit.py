@@ -34,6 +34,11 @@ def client(app):
     return app.test_client()
 
 
+def authorize(client):
+    client.post('/auth/register', data={'username': 'user', 'password': 'password'})
+    client.post('auth/login', data={'username': 'user', 'password': 'password'})
+
+
 # -------- DATABASE --------
 
 def test_db_connection(app):
@@ -83,14 +88,19 @@ def test_should_water_2(app):
     with app.app_context():
         testing_db = db.get_db()
         testing_db.execute(
+            'INSERT INTO characteristics (timestamp, ideal_humidity, ideal_temperature)'
+            ' VALUES (?, ?, ?) ',
+            (time.time(), 70, 10)
+        )
+        testing_db.execute(
             'INSERT INTO humidity (timestamp, value)'
             ' VALUES (?, ?) ',
-            (time.time(), 100)
+            (time.time(), 41.927)
         )
         testing_db.execute(
             'INSERT INTO temperature (timestamp, value)'
             ' VALUES (?, ?) ',
-            (time.time(), 100)
+            (time.time(), 22.37)
         )
         testing_db.commit()
         
@@ -98,8 +108,16 @@ def test_should_water_2(app):
         assert response['status'] == 'success'
 
 
-def test_get_water_qty():
-    assert isinstance(water.get_water_qty(10, 100), float)
+def test_get_water_qty(app):
+    with app.app_context():
+        testing_db = db.get_db()
+        testing_db.execute(
+            'INSERT INTO characteristics (timestamp, ideal_humidity, ideal_temperature)'
+            ' VALUES (?, ?, ?) ',
+            (time.time(), 100.0, 100.0)
+        )
+        testing_db.commit()
+        assert isinstance(water.get_water_qty(10, 100), float)
 
 
 # -------- END FUNCTIONALITIES --------
@@ -108,83 +126,87 @@ def test_get_water_qty():
 # -------- HTTP ROUTES --------
 
 def test_set_characteristics_1(client):
+    authorize(client)
     payload = {}
     response = client.post('/characteristics/set', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_characteristics_2(client):
+    authorize(client)
     payload = {'ideal_temperature': '$sjn2', 'ideal_humidity': '12ndd[f'}
     response = client.post('/characteristics/set', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_characteristics_3(client):
+    authorize(client)
     payload = {'ideal_temperature': 100, 'ideal_humidity': 100}
     response = client.post('/characteristics/set', data=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
 def test_force_water_1(client):
+    authorize(client)
     payload = {}
     response = client.post('/force_water', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_force_water_2(client):
+    authorize(client)
     payload = {'value': '###'}
     response = client.post('/force_water', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_force_water_3(client):
+    authorize(client)
     payload = {'value': 100}
     response = client.post('/force_water', data=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
 def test_set_humidity_1(client):
+    authorize(client)
     payload = {}
     response = client.post('/humidity/set', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_humidity_2(client):
+    authorize(client)
     payload = {'value': 'spam'}
     response = client.post('/humidity/set', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_humidity_3(client):
+    authorize(client)
     payload = {'value': 125}
     response = client.post('/humidity/set', data=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
 def test_set_temperature_1(client):
+    authorize(client)
     payload = {}
     response = client.post('/temperature/set', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_temperature_2(client):
+    authorize(client)
     payload = {'degrees': 'spam'}
     response = client.post('/temperature/set', data=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_temperature_3(client):
+    authorize(client)
     payload = {'degrees': 10}
     response = client.post('/temperature/set', data=payload, follow_redirects=True)
     assert response.status_code == 200
-
-
-def test_water_api(client):
-    response = client.get('/water', follow_redirects=True)
-    assert response.status_code == 200
-
-
-# test_plot ? 
 
 # -------- END HTTP ROUTES --------
 

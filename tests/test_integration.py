@@ -34,24 +34,30 @@ def client(app):
     return app.test_client()
 
 
+def authorize(client):
+    client.post('/auth/register', data={'username': 'user', 'password': 'password'})
+    client.post('auth/login', data={'username': 'user', 'password': 'password'})
+
+
 @pytest.mark.integtest
 def test_app(app, client):
+    authorize(client)
     with app.app_context():
         # Set plant characteristics
-        response = client.post('/characteristics/set', data={'ideal_humidity': 10, 'ideal_temperature': 10}, follow_redirects=True)
+        response = client.post('/characteristics/set', data={'ideal_humidity': 70, 'ideal_temperature': 10}, follow_redirects=True)
         assert response.status_code == 200
 
         # Set temperature
-        response = client.post('/temperature/set', data={'degrees': 10}, follow_redirects=True)
+        response = client.post('/temperature/set', data={'degrees': 22.37}, follow_redirects=True)
         assert response.status_code == 200
 
         # Set humidity
-        response = client.post('/humidity/set', data={'value': 10}, follow_redirects=True)
+        response = client.post('/humidity/set', data={'value': 41.927}, follow_redirects=True)
         assert response.status_code == 200
 
         # Water status => should tell us to water
         response = water.get_status()
-        assert response['status'] == 'success'  # and response['data']['water'] == 1
+        assert response['status'] == 'success' and response['data']['water'] == 1
 
         # Water plant
         timestamp = time.time()
@@ -64,14 +70,18 @@ def test_app(app, client):
         ).fetchone()
         assert(entry is not None)
 
+        # Set plant characteristics
+        response = client.post('/characteristics/set', data={'ideal_humidity': 10, 'ideal_temperature': 10}, follow_redirects=True)
+        assert response.status_code == 200
+
         # Set humidity
-        response = client.post('/humidity/set', data={'value': 10}, follow_redirects=True)
+        response = client.post('/humidity/set', data={'value': 20}, follow_redirects=True)
         assert response.status_code == 200
 
         # Force water
-        response = client.post('/force_water', data={'value': 10}, follow_redirects=True)
+        response = client.post('/force_water', data={'value': 100}, follow_redirects=True)
         assert response.status_code == 200
 
         # Water status => should tell us not to water
         response = water.get_status()
-        assert response['status'] == 'success' # and response['data']['water'] == 0
+        assert response['status'] == 'success' and response['data']['water'] == 0
