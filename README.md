@@ -90,7 +90,9 @@ flask init-db
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. **Start the MQTT Broker service**. If Mosquitto is used, run:
+1. **Start the MQTT Broker service**. The Broker represents an intermediary entity that enables the MQTT clients to communicate.
+
+If Mosquitto is used, run:
 ```sh
 sudo service mosquitto start 
 ```
@@ -117,7 +119,7 @@ python3 mqtt_comms_sub.py
 
 ## Developer Tools
 ### OpenAPI
-We used the OpenAPI Initiative (OAI) to specify what our API can do. 
+We used the [OpenAPI Initiative (OAI)](https://www.openapis.org/) to specify what our API can do. 
 
 The Swagger UI can be accessed at:
 ```
@@ -153,6 +155,8 @@ Run
 make html
 ```
 from the command line to manually build the docs - then, in `docs->build_->html` directory you should see `index.html`.
+
+Note: we followed the [Style guide for Sphinx-based documentations](https://documentation-style-guide-sphinx.readthedocs.io/en/latest/style-guide.html).
 
 
 <!-- CONTRIBUTING -->

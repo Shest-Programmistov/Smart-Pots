@@ -9,7 +9,9 @@ After having installed successfully the requirements, follow the next steps:
 Running on Linux
 ****************
 
-1. **Start the MQTT Broker service**. If Mosquitto is used, run:
+1. **Start the MQTT Broker service**. The Broker represents an intermediary entity that enables the MQTT clients to communicate.
+
+If Mosquitto is used, run:
 ::
     sudo service mosquitto start 
 
@@ -39,6 +41,7 @@ Developer Tools
 
 OpenAPI
 =======
+We used the `OpenAPI Initiative (OAI) <https://www.openapis.org/>`_ to specify what our API can do. 
 
 The Swagger API can be accessed at:
 ::
@@ -46,6 +49,8 @@ The Swagger API can be accessed at:
 
 AsyncAPI
 ========
+The `AsyncAPI Specification <https://www.asyncapi.com/docs/specifications/v2.0.0>`_ is a comprehensive specification language for describing asynchronous messaging APIs. 
+
 If AsyncAPI Generator is not installed, you can install it by running:
 ::
     npm install -g @asyncapi/generator
