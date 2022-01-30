@@ -116,6 +116,10 @@ flask run
 ```sh
 python3 mqtt_comms_sub.py
 ```
+## Test
+```sh
+pytest
+```
 
 ## Developer Tools
 ### OpenAPI
