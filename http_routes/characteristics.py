@@ -39,21 +39,22 @@ def set():
       422:
         description: required parameters not supplied.
     """
-    if not 'ideal_humidity' in request.form:
+    request_data = request.get_json()
+
+    if request_data is None or not 'ideal_humidity' in request_data:
       return jsonify({'message': 'Ideal humidity value is required.'}), 422
 
-    ideal_humidity = request.form['ideal_humidity']
+    ideal_humidity = request_data['ideal_humidity']
 
     try:
         float(ideal_humidity)
     except:
         return jsonify({'message': 'Ideal humidity must be numeric.'}), 422
     
-
-    if not 'ideal_temperature' in request.form:
+    if request_data is None or not 'ideal_temperature' in request_data:
         return jsonify({'message': 'Ideal temperature value is required.'}), 422
 
-    ideal_temperature = request.form['ideal_temperature']
+    ideal_temperature = request_data['ideal_temperature']
     
     try:
         float(ideal_temperature)
