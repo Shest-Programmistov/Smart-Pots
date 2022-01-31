@@ -19,6 +19,7 @@ and download and install the Mosquitto Broker for your OS.
 
 For Ubuntu/Debian:
 ==================
+Run:
 ::
     sudo apt-get install mosquitto
 
