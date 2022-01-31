@@ -18,6 +18,7 @@ import http_routes.humidity as humidity
 import http_routes.force_water as force_water
 import http_routes.characteristics as characteristics
 import http_routes.plot as plot
+import http_routes.frontend as frontend
 
 # Necessary monkey-patch so that SocketIO successfully works.
 eventlet.monkey_patch()
@@ -70,6 +71,7 @@ def create_app(testing=False, db_path='flaskr.sqlite'):
     app.register_blueprint(force_water.bp)
     app.register_blueprint(characteristics.bp)
     app.register_blueprint(plot.bp)
+    app.register_blueprint(frontend.bp)
 
     return app
 
