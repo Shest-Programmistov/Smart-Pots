@@ -35,8 +35,8 @@ def client(app):
 
 
 def authorize(client):
-    client.post('/auth/register', data={'username': 'user', 'password': 'password'})
-    client.post('auth/login', data={'username': 'user', 'password': 'password'})
+    client.post('/auth/register', json={'username': 'user', 'password': 'password'})
+    client.post('auth/login', json={'username': 'user', 'password': 'password'})
 
 
 # -------- DATABASE --------
@@ -128,84 +128,84 @@ def test_get_water_qty(app):
 def test_set_characteristics_1(client):
     authorize(client)
     payload = {}
-    response = client.post('/characteristics/set', data=payload, follow_redirects=True)
+    response = client.post('/characteristics/set', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_characteristics_2(client):
     authorize(client)
     payload = {'ideal_temperature': '$sjn2', 'ideal_humidity': '12ndd[f'}
-    response = client.post('/characteristics/set', data=payload, follow_redirects=True)
+    response = client.post('/characteristics/set', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_characteristics_3(client):
     authorize(client)
     payload = {'ideal_temperature': 100, 'ideal_humidity': 100}
-    response = client.post('/characteristics/set', data=payload, follow_redirects=True)
+    response = client.post('/characteristics/set', json=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
 def test_force_water_1(client):
     authorize(client)
     payload = {}
-    response = client.post('/force_water', data=payload, follow_redirects=True)
+    response = client.post('/force_water', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_force_water_2(client):
     authorize(client)
     payload = {'value': '###'}
-    response = client.post('/force_water', data=payload, follow_redirects=True)
+    response = client.post('/force_water', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_force_water_3(client):
     authorize(client)
     payload = {'value': 100}
-    response = client.post('/force_water', data=payload, follow_redirects=True)
+    response = client.post('/force_water', json=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
 def test_set_humidity_1(client):
     authorize(client)
     payload = {}
-    response = client.post('/humidity/set', data=payload, follow_redirects=True)
+    response = client.post('/humidity/set', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_humidity_2(client):
     authorize(client)
     payload = {'value': 'spam'}
-    response = client.post('/humidity/set', data=payload, follow_redirects=True)
+    response = client.post('/humidity/set', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_humidity_3(client):
     authorize(client)
     payload = {'value': 125}
-    response = client.post('/humidity/set', data=payload, follow_redirects=True)
+    response = client.post('/humidity/set', json=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
 def test_set_temperature_1(client):
     authorize(client)
     payload = {}
-    response = client.post('/temperature/set', data=payload, follow_redirects=True)
+    response = client.post('/temperature/set', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_temperature_2(client):
     authorize(client)
     payload = {'degrees': 'spam'}
-    response = client.post('/temperature/set', data=payload, follow_redirects=True)
+    response = client.post('/temperature/set', json=payload, follow_redirects=True)
     assert response.status_code == 422
 
 
 def test_set_temperature_3(client):
     authorize(client)
     payload = {'degrees': 10}
-    response = client.post('/temperature/set', data=payload, follow_redirects=True)
+    response = client.post('/temperature/set', json=payload, follow_redirects=True)
     assert response.status_code == 200
 
 
