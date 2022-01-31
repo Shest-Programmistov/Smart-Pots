@@ -1,4 +1,4 @@
-apiUrl = "http://localhost:5000"
+apiUrl = "http://127.0.0.1:5000"
 
 async function callRegister(username, password) {
     const postData = {
@@ -6,7 +6,7 @@ async function callRegister(username, password) {
         "username": username
     }
 
-    const response = await fetch(apiUrl + "/auth/register", {
+    const response = await fetch("/auth/register", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
@@ -23,7 +23,7 @@ async function callLogin(username, password) {
         "username": username
     }
 
-    const response = await fetch(apiUrl + "/auth/login", {
+    const response = await fetch("/auth/login", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
@@ -31,13 +31,6 @@ async function callLogin(username, password) {
         }
     });
 
-    console.log(response);
-
-    return response.ok;
-}
-
-async function callLogout() {
-    const response = await fetch(apiUrl + "/auth/logout");
     return response.ok;
 }
 
@@ -47,7 +40,7 @@ async function callSetCharacteristic(humidity, tempereture) {
         "ideal_temperature": tempereture
     }
 
-    const response = await fetch(apiUrl + "/characteristics/set", {
+    const response = await fetch("/characteristics/set", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
@@ -63,7 +56,7 @@ async function callSetHumidity(value) {
         "value": value,
     }
 
-    const response = await fetch(apiUrl + "/humidity/set", {
+    const response = await fetch("/humidity/set", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
@@ -79,7 +72,7 @@ async function callSetTemperature(degrees) {
         "degrees": degrees,
     }
 
-    const response = await fetch(apiUrl + "/temperature/set", {
+    const response = await fetch("/temperature/set", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
@@ -95,7 +88,7 @@ async function callForceWater(value) {
         "value": value,
     }
 
-    const response = await fetch(apiUrl + "/tforce_water", {
+    const response = await fetch("/tforce_water", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
@@ -104,19 +97,4 @@ async function callForceWater(value) {
     });
 
     return response.ok;
-}
-
-async function callPlots() {
-    const response1 = await fetch(apiUrl + "/plot");
-    const response2 = await fetch(apiUrl + "/plot_humidity");
-    const response3 = await fetch(apiUrl + "/plot_temperature");
-
-    if (!response1.ok || !response2.ok || !response3.ok) 
-        return null;
-
-    return {
-        "quantities": response1.json(),
-        "humidity": response2.json(),
-        "temperature": response3.json()
-    }
 }

@@ -1,85 +1,103 @@
-
-function displayPlots() {
-    
+function constructErrorCard(msg) {
+    errorCard = document.createElement('div');
+    errorCard.className = 'card';
+    errorCard.id = 'error-card';
+    authResponse = document.createElement('div');
+    authResponse.className = 'card-body';
+    authMsg = document.createElement('p');
+    errorCard.appendChild(authResponse);
+    authResponse.appendChild(authMsg);
+    authMsg.innerText = msg;
+    authMsg.className = 'text-warning';
+    return errorCard;
 }
 
 async function register() {
-    username = document.getElementById("form3Example1c");
-    pass = document.getElementById("form3Example4c");
+    username = document.getElementById("form3Example1c").value;
+    pass = document.getElementById("form3Example4c").value;
 
-    const ok = await callRegister(username, pass);
-    authCard = document.getElementById("error-card");
+    ok = await callRegister(username, pass);
+    errorCard = document.getElementById("error-card");
 
     if (ok) {
-        if (authCard !== null)
-            authCard.parentNode.removeChild(authCard);
+        if (errorCard !== null)
+            errorCard.parentNode.removeChild(errorCard);
         window.location.replace(apiUrl);
     }
     else {
-        if (authCard === null) {
-            authCard = document.createElement('div');
-            authCard.className = 'card';
-            authCard.id = 'error-card';
-            authResponse = document.createElement('div');
-            authResponse.className = 'card-body';
-            authMsg = document.createElement('p');
-            authCard.appendChild(authResponse);
-            authResponse.appendChild(authMsg);
-            authMsg.innerText = "Invalid username or password";
-            authMsg.className = 'text-warning';
+        if (errorCard === null) {
+            errorCard = constructErrorCard("Invalid username or password");
             form = document.getElementById("signupForm");
-            form.appendChild(authCard);
+            form.appendChild(errorCard);
         }
     }
 }
 
 async function login() {
-    username = document.getElementById("form3Example3");
-    pass = document.getElementById("form3Example4");
+    username = document.getElementById("form3Example3").value;
+    pass = document.getElementById("form3Example4").value;
 
-    const ok = await callLogin(username, pass);
-    authCard = document.getElementById("error-card");
+    ok = await callLogin(username, pass);
+    errorCard = document.getElementById("error-card");
 
     if (ok) {
-        if (authCard !== null)
-            authCard.parentNode.removeChild(authCard);
+        if (errorCard !== null)
+            errorCard.parentNode.removeChild(errorCard);
         window.location.replace(apiUrl);
     }
     else {
-        if (authCard === null) {
-            authCard = document.createElement('div');
-            authCard.className = 'card';
-            authCard.id = 'error-card';
-            authResponse = document.createElement('div');
-            authResponse.className = 'card-body';
-            authMsg = document.createElement('p');
-            authCard.appendChild(authResponse);
-            authResponse.appendChild(authMsg);
-            authMsg.innerText = "Wrong username or password";
-            authMsg.className = 'text-warning';
+        if (errorCard === null) {
+            errorCard = constructErrorCard("Wrong username or password");
             form = document.getElementById("loginForm");
-            form.appendChild(authCard);
+            form.appendChild(errorCard);
         }
     }
 }
 
 async function logout() {
-    callLogout();
-    window.location.replace(apiUrl);
+    await fetch("/auth/logout");
+    window.location.replace(apiUrl + '/login');
 }
 
-async function forceWater(value) {
-    
+async function forceWater() {
+    waterAmount = (document.getElementById("water").value);
+    ok = callForceWater(Number(waterAmount));
+    if (ok && waterAmount != '')
+        alert("Force water was successfull");
+    else
+        alert("Can't force water - invalid fields");
 }
 
-async function setCharacteristics(humidity, temperature) {
-   
+async function setCharacteristics() {
+    idealHum = (document.getElementById('idealHumidity').value);
+    idealTemp = (document.getElementById('idealTemp').value);
+
+    ok = callSetCharacteristic(Number(idealHum), Number(idealTemp));
+    if (ok && idealHum != '' && idealTemp != '')
+        alert("Set characteristics successfully");
+    else
+        alert("Can't set characteristics - invalid fields");
 }
 
-async function setHumidity(value) {
-    
+async function setHumidity() {
+    humidity = (document.getElementById('humidity').value);
+
+    ok = callSetHumidity(Number(humidity));
+    if (ok && humidity != '')
+        alert("Set humidity successfully");
+    else
+        alert("Can't set humidity - invalid fields");
+
+    console.log(ok);
+    console.log(humidity);
 }
 
-async function setTemperature(degrees) {
-    
+async function setTemperature() {
+    tempereture = (document.getElementById('temp').value);
+
+    ok = callSetTemperature(Number(tempereture));
+    if (ok && tempereture != '')
+        alert("Set temperature successfully");
+    else
+        alert("Can't set temperature - invalid fields");
 }
