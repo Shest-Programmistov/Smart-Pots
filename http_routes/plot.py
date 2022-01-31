@@ -111,7 +111,7 @@ def plot_temperature():
 
     data = get_db().execute(
         'SELECT timestamp, value'
-        ' FROM temperature WHERE timestamp >= ' + str(nowTime - oneWeek)
+        ' FROM temperature WHERE timestamp >= ' + str(nowTime - oneWeek) + ' ORDER BY timestamp'
     ).fetchall()
 
     timestamps = [x[0] for x in data]
@@ -140,7 +140,7 @@ def plot_humidity():
 
     data = get_db().execute(
         'SELECT timestamp, value'
-        ' FROM humidity WHERE timestamp >= ' + str(nowTime - oneWeek)
+        ' FROM humidity WHERE timestamp >= ' + str(nowTime - oneWeek) + ' ORDER BY timestamp'
     ).fetchall()
 
     timestamps = [x[0] for x in data]
