@@ -55,6 +55,7 @@ def generate_weekly_plot(timestamps, values, oneWeekAgo):
         vmax=100)
     pl.xlim(0, desiredShape[1])
     fig.savefig('a.jpg')
+    pl.close()
 
 
 @bp.route('/plot')
@@ -89,6 +90,7 @@ def plot():
 def generate_weekly_normal_graph(timestamps, values, oneWeekAgo):
     pl.plot(timestamps, values)
     pl.savefig('a.jpg')
+    pl.close()
 
 
 @bp.route('/plot_temperature')
