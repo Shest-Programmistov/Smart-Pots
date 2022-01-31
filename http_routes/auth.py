@@ -1,13 +1,12 @@
 import functools
 
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
-)
+from flask import (Blueprint, g, request, session, jsonify)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
 
 @bp.route('/register', methods=["POST"])
 def register():
@@ -39,14 +38,14 @@ def register():
 
     request_data = request.get_json()
 
-    if request_data is None or not 'username' in request_data:
+    if request_data is None or 'username' not in request_data:
         return jsonify({'status': 'Username is required.'}), 422
-    elif not 'password' in request_data:
+    elif 'password' not in request_data:
         return jsonify({'status': 'Password is required.'}), 422
 
     username = request_data['username']
     password = request_data['password']
-    
+
     db = get_db()
 
     try:
@@ -56,9 +55,11 @@ def register():
         )
         db.commit()
     except db.IntegrityError:
-        return jsonify({'status': f'User {username} is already registered.'}), 403
+        return jsonify(
+            {'status': f'User {username} is already registered.'}), 403
 
     return jsonify({'status': 'user registered succesfully'}), 200
+
 
 @bp.route('/login', methods=["POST"])
 def login():
@@ -90,9 +91,9 @@ def login():
 
     request_data = request.get_json()
 
-    if request_data is None or not 'username' in request_data:
+    if request_data is None or 'username' not in request_data:
         return jsonify({'status': 'Username is required.'}), 422
-    elif request_data is None or not 'password' in request_data:
+    elif request_data is None or 'password' not in request_data:
         return jsonify({'status': 'Password is required.'}), 422
 
     username = request_data['username']

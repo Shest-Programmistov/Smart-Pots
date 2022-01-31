@@ -1,5 +1,4 @@
 """Humidity endpoint"""
-import re
 from flask import (
     Blueprint, request, jsonify
 )
@@ -38,7 +37,7 @@ def set():
 
     request_data = request.get_json()
 
-    if request_data is None or not 'value' in request_data:
+    if request_data is None or 'value' not in request_data:
         return jsonify({'message': 'Value is required.'}), 422
 
     value = request_data['value']

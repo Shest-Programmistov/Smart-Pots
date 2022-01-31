@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from threading import Thread
 from flask_mqtt import Mqtt
-# Import SockeIO, which allows us to send messages to 
+# Import SockeIO, which allows us to send messages to
 # an MQTT client using Flask syntax.
 from flask_socketio import SocketIO
 from flask_swagger import swagger
@@ -24,7 +24,7 @@ import http_routes.frontend as frontend
 eventlet.monkey_patch()
 
 app = None  # Flask app
-mqtt = None # MQTT wrapper over app
+mqtt = None  # MQTT wrapper over app
 socketio = None
 thread = None
 
@@ -63,7 +63,7 @@ def create_app(testing=False, db_path='flaskr.sqlite'):
 
     if not testing:
         db.init_app(app)
-        
+
     app.register_blueprint(swaggerui_blueprint)
     app.register_blueprint(auth.bp)
     app.register_blueprint(temperature.bp)
@@ -126,7 +126,8 @@ def background_thread():
         mqtt.publish('python/mqtt', message)
 
 
-# App will now have to be run with `python app.py` as flask is now wrapped in socketio.
+# App will now have to be run with `python app.py`, 
+# as Flask is now wrapped in socketio.
 def run_socketio_app():
     create_app()
     create_mqtt_app()

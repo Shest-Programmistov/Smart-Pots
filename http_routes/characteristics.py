@@ -41,8 +41,8 @@ def set():
     """
     request_data = request.get_json()
 
-    if request_data is None or not 'ideal_humidity' in request_data:
-      return jsonify({'message': 'Ideal humidity value is required.'}), 422
+    if request_data is None or 'ideal_humidity' not in request_data:
+        return jsonify({'message': 'Ideal humidity value is required.'}), 422
 
     ideal_humidity = request_data['ideal_humidity']
 
@@ -50,12 +50,13 @@ def set():
         float(ideal_humidity)
     except:
         return jsonify({'message': 'Ideal humidity must be numeric.'}), 422
-    
-    if request_data is None or not 'ideal_temperature' in request_data:
-        return jsonify({'message': 'Ideal temperature value is required.'}), 422
+
+    if request_data is None or 'ideal_temperature' not in request_data:
+        return jsonify(
+            {'message': 'Ideal temperature value is required.'}), 422
 
     ideal_temperature = request_data['ideal_temperature']
-    
+
     try:
         float(ideal_temperature)
     except:
@@ -64,9 +65,7 @@ def set():
     db = get_db()
     db.execute(
         'INSERT INTO characteristics (timestamp, ideal_humidity, ideal_temperature)'
-        ' VALUES (?, ?, ?) ',
-        (time.time(), ideal_humidity, ideal_temperature)
-    )
+        ' VALUES (?, ?, ?) ', (time.time(), ideal_humidity, ideal_temperature))
     db.commit()
 
     return jsonify({'message': 'Successfully set characteristics.'}), 200
