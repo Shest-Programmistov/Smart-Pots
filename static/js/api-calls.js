@@ -88,7 +88,7 @@ async function callForceWater(value) {
         "value": value,
     }
 
-    const response = await fetch("/tforce_water", {
+    const response = await fetch("/force_water", {
         method: "POST",
         body: JSON.stringify(postData),
         headers: {
