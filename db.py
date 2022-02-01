@@ -35,7 +35,7 @@ def init_db():
 
     with open('schema.sql', encoding='utf8') as f:
         db.executescript(f.read())
-    
+
     if current_app.config['DB_PATH'] == 'flaskr.sqlite':
         populate_database(db)
 

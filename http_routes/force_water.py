@@ -37,8 +37,8 @@ def force_water():
     """
     request_data = request.get_json()
 
-    if request_data is None or not 'value' in request_data:
-      return jsonify({'message': 'Value is required.'}), 422
+    if request_data is None or 'value' not in request_data:
+        return jsonify({'message': 'Value is required.'}), 422
 
     value = request_data['value']
 

@@ -1,5 +1,4 @@
 """Temperature endpoint"""
-from math import degrees
 from flask import (
     Blueprint, request, jsonify
 )
@@ -38,7 +37,7 @@ def set():
 
     request_data = request.get_json()
 
-    if request_data is None or not 'degrees' in request_data:
+    if request_data is None or 'degrees' not in request_data:
         return jsonify({'message': 'Degrees are required.'}), 422
 
     degrees = request_data['degrees']
@@ -56,4 +55,5 @@ def set():
     )
     db.commit()
 
-    return jsonify({'message': 'Successfully recorded temperature value.'}), 200
+    return jsonify(
+        {'message': 'Successfully recorded temperature value.'}), 200

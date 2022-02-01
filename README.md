@@ -1,6 +1,5 @@
 <!-- README template used: https://github.com/othneildrew/Best-README-Template -->
 
-# Smart Pots
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -8,11 +7,17 @@
 [![MIT License][license-shield]][license-url]
 
 
+<h3 align="center">Smart Pots</h3>
+  <p align="center">
+    We take care of your plant so you don't have to.
+  </p>
+
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 This **IoT** project aims at implementing **remote care for a potted plant** through sensors and robotics, which monitor its state.
 
-This project was developed by Blahovici Andrei, Dumitrescu Delia, Ganea Antonio, Preda Mihai, Tudor Raluca and Ţifui Alexandru, during their third year of CS studies at University of Bucharest.
+This project was developed by Blahovici Andrei, Dumitrescu Delia, Ganea Antonio, Preda Mihai, Tudor Raluca and Ţifui Alexandru, during their third year of CS studies at University of Bucharest, under guidance of Rareș Cristea.
 
 The documentation can also be found at [Smart Pots Documentation](https://smart-pots.readthedocs.io/).
 
@@ -23,6 +28,8 @@ More information can be found in the [Customer Requirements Analysis Document](h
 * [Flask](https://flask.palletsprojects.com/en/2.0.x/)
 * [SQLite](https://www.sqlite.org/index.html)
 * [Eclipse Mosquitto](https://mosquitto.org/)
+* [Flask-MQTT](https://flask-mqtt.readthedocs.io/en/latest/)
+* [pytest](https://docs.pytest.org/en/6.2.x/)
 
 
 <!-- GETTING STARTED -->
@@ -30,25 +37,39 @@ More information can be found in the [Customer Requirements Analysis Document](h
 
 ### Prerequisites
 You should have [python3](https://www.python.org/downloads/) and [pip3](https://pypi.org/project/pip/) installed.
+<!--```sh
+sudo apt-get install python3-pip
+```-->
 
 Also, you should have an MQTT Broker installed.
 
-#### Linux
-```sh
-sudo apt-get install python3-pip
-```
+### Mosquitto MQTT Broker Installation
 
-For installing Mosquitto MQTT Broker on Linux:
+For installing Mosquitto MQTT Broker, go to their [official website](https://mosquitto.org/download/) and download and install the Mosquitto Broker for your OS.
+
+#### For Ubuntu/Debian:
 <!-- http://www.steves-internet-guide.com/install-mosquitto-linux/ -->
 ```sh
 sudo apt-get install mosquitto
 ```
+To check whether the service is running or not and to start it, run:
+```sh
+sudo systemctl status mosquitto # Checking if the service is running
+sudo systemctl start mosquitto # Start the service
+```
+
+#### For Mac: 
+Install Mosquitto on Mac OS using Homebrew:
+```bash
+brew install mosquitto
+```
 
 ### Installation
 
-#### Linux
 <!-- https://tech.serhatteker.com/post/2018-12/virtualenv/ -->
-1. Install virtualenv if not already installed:
+1. Install virtualenv if not already installed. 
+
+On Linux, run:
 ```sh
 sudo pip3 install virtualenv
 ```
@@ -61,7 +82,7 @@ virtualenv .venv
 
 Note: Use `.venv` or any `$NAME` for your virtualenv.
 
-3. Activate environment:
+3. Activate the environment:
 ```sh
 source .venv/bin/activate
 ```
@@ -72,7 +93,7 @@ and you see your `.venv` activated
 
 Note: To deactivate the environment, simply use `deactivate`.
 
-4. Install libraries
+4. Install the required libraries:
 ```sh
 pip3 install -r requirements.txt
 ```
@@ -117,7 +138,7 @@ flask run
 python3 mqtt_comms_sub.py
 ```
 
-## Test
+## Testing
 To run the tests, simply execute:
 ```sh
 pytest
@@ -218,6 +239,13 @@ dotnet ./restler/Restler.dll test --grammar_file grammar.py --dictionary_file di
 
 * Accepted temperature and humidity values are real numbers, but at first they were checked for integers (non-floating numbers)
 * Empty form bodies made all endpoints throw exceptions
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the Apache-2.0 License. See `LICENSE` for more information.
+
 
 <!-- CONTRIBUTING -->
 ## Contributing

@@ -1,4 +1,3 @@
-import sqlite3
 import pytest
 import tempfile
 import os, sys
@@ -38,23 +37,23 @@ def client(app):
 def test_app(app, client):
     with app.app_context():
         # Register
-        response = client.post('/auth/register', data={'username': 'user', 'password': 'password'})
+        response = client.post('/auth/register', json={'username': 'user', 'password': 'password'})
         assert response.status_code == 200
 
         # Login
-        response = client.post('auth/login', data={'username': 'user', 'password': 'password'})
+        response = client.post('auth/login', json={'username': 'user', 'password': 'password'})
         assert response.status_code == 200
 
         # Set plant characteristics
-        response = client.post('/characteristics/set', data={'ideal_humidity': 70, 'ideal_temperature': 10}, follow_redirects=True)
+        response = client.post('/characteristics/set', json={'ideal_humidity': 70, 'ideal_temperature': 10}, follow_redirects=True)
         assert response.status_code == 200
 
         # Set temperature
-        response = client.post('/temperature/set', data={'degrees': 22.37}, follow_redirects=True)
+        response = client.post('/temperature/set', json={'degrees': 22.37}, follow_redirects=True)
         assert response.status_code == 200
 
         # Set humidity
-        response = client.post('/humidity/set', data={'value': 41.927}, follow_redirects=True)
+        response = client.post('/humidity/set', json={'value': 41.927}, follow_redirects=True)
         assert response.status_code == 200
 
         # Water status => should tell us to water
@@ -73,15 +72,15 @@ def test_app(app, client):
         assert(entry is not None)
 
         # Set plant characteristics
-        response = client.post('/characteristics/set', data={'ideal_humidity': 10, 'ideal_temperature': 10}, follow_redirects=True)
+        response = client.post('/characteristics/set', json={'ideal_humidity': 10, 'ideal_temperature': 10}, follow_redirects=True)
         assert response.status_code == 200
 
         # Set humidity
-        response = client.post('/humidity/set', data={'value': 20}, follow_redirects=True)
+        response = client.post('/humidity/set', json={'value': 20}, follow_redirects=True)
         assert response.status_code == 200
 
         # Force water
-        response = client.post('/force_water', data={'value': 100}, follow_redirects=True)
+        response = client.post('/force_water', json={'value': 100}, follow_redirects=True)
         assert response.status_code == 200
 
         # Water status => should tell us not to water
