@@ -138,7 +138,7 @@ flask run
 python3 mqtt_comms_sub.py
 ```
 
-## Test
+## Testing
 To run the tests, simply execute:
 ```sh
 pytest
